@@ -48,6 +48,8 @@ const boxClosed = '/cryptoGift/cryptoGift/images/cryptoGift/boxClosed.png';
 const boxEmpty = '/cryptoGift/cryptoGift/images/cryptoGift/boxEmpty.png';
 const boxOpened = '/cryptoGift/cryptoGift/images/cryptoGift/boxOpened.png';
 
+export const PORTKEY_SDK_TELEGRAM_USER_ID = 'portkey_sdk_telegram_user_id';
+
 interface ICryptoGiftProps {
   cryptoGiftId: string;
 }
@@ -72,6 +74,26 @@ const CryptoGift: React.FC<ICryptoGiftProps> = ({ cryptoGiftId }) => {
   const { claimAgainCountdownSecond, expiredTime, rootTime } = useCryptoDetailTimer();
 
   const [btnLoading, setBtnLoading] = useState(false);
+
+  const initializeTelegramWebApp = useCallback(() => {
+    console.log('1111');
+    const Telegram = TelegramPlatform.getTelegram();
+    if (!Telegram || !TelegramPlatform.isTelegramPlatform()) return;
+    console.log('2222');
+
+    const currentTelegramUserId = TelegramPlatform.getTelegramUserId();
+    const preTelegramUserId = window.localStorage.getItem(PORTKEY_SDK_TELEGRAM_USER_ID);
+
+    console.log('3333', currentTelegramUserId, preTelegramUserId);
+
+    if (currentTelegramUserId && currentTelegramUserId !== preTelegramUserId) {
+      console.log('4444');
+      console.log('logout');
+      window.localStorage.setItem(PORTKEY_SDK_TELEGRAM_USER_ID, currentTelegramUserId);
+      console.log('55555', currentTelegramUserId);
+    }
+    Telegram.WebApp.ready();
+  }, []);
 
   useEffect(() => {
     walletInfoRef.current = walletInfo;
@@ -312,6 +334,7 @@ const CryptoGift: React.FC<ICryptoGiftProps> = ({ cryptoGiftId }) => {
     return (
       <>
         <Avatar
+          onClick={() => initializeTelegramWebApp()}
           alt={cryptoDetail?.sender?.nickname?.[0] || ''}
           className={styles.cryptoGiftSenderImg}
           src={cryptoDetail?.sender?.avatar || ' '}>

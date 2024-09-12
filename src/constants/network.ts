@@ -34,7 +34,7 @@ export const BackEndNetWorkMap: {
     loginType: ['Google', 'Email', 'Apple', 'Telegram', 'Scan'],
     defaultChain: 'tDVW',
     tgMiniAppPath: 'https://t.me/PortkeyTestnet_Bot/crypto_gift',
-    tgBotId: '7493109909',
+    tgBotId: '7529122122',
   },
   mainnet: {
     name: 'aelf Mainnet',
